@@ -1,0 +1,27 @@
+# Internal documentation
+internal_docs/**
+
+# CMake and build outputs
+build/
+cmake-build-*/
+CMakeUserPresets.json
+
+# Python environments and caches
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Disposable JUBE runs and logs
+bench_run/
+bench_run_*/
+jube-parse.log
+jube-debug.log
+
+# Other disposable run outputs
+run/
+
+# Editor and operating-system files
+.DS_Store
+.idea/
+.vscode/

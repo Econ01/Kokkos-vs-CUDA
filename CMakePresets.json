@@ -1,0 +1,82 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "macos-serial",
+      "displayName": "macOS host-only development",
+      "inherits": "base",
+      "cacheVariables": {
+        "KVC_ENABLE_CUDA": "OFF"
+      }
+    },
+    {
+      "name": "fedora-serial",
+      "displayName": "Fedora host-only development",
+      "inherits": "base",
+      "cacheVariables": {
+        "KVC_ENABLE_CUDA": "OFF"
+      }
+    },
+    {
+      "name": "fedora-cuda",
+      "displayName": "Fedora CUDA on RTX 4080 Laptop (sm_89)",
+      "inherits": "base",
+      "cacheVariables": {
+        "KVC_ENABLE_CUDA": "ON",
+        "CMAKE_CUDA_ARCHITECTURES": "89"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "macos-serial",
+      "configurePreset": "macos-serial"
+    },
+    {
+      "name": "fedora-serial",
+      "configurePreset": "fedora-serial"
+    },
+    {
+      "name": "fedora-cuda",
+      "configurePreset": "fedora-cuda"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "macos-serial",
+      "configurePreset": "macos-serial",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "fedora-serial",
+      "configurePreset": "fedora-serial",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "fedora-cuda",
+      "configurePreset": "fedora-cuda",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ]
+}
