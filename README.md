@@ -7,12 +7,14 @@ This project compares Kokkos and native CUDA implementations of STREAM Triad, a 
 ## Project progress
 
 <!-- PROGRESS_DASHBOARD:START -->
-**Current focus:** Phase 1: macOS host environment  
+**Current focus:** Phase 1 — macOS host environment  
 **Next milestone:** Validate Kokkos Serial and JUBE on macOS.
+
+**Status legend:** ✅ Complete · 🔄 In progress · ⬜ Not started · 🔒 Blocked · ⚠️ Needs attention
 
 [![Project pipeline progress: Phase 1 — macOS host environment is in progress](docs/assets/project-progress.svg)](docs/PIPELINE.md)
 
-**Status legend:** ✅ Complete · 🔄 In progress · ⬜ Not started · 🔒 Blocked · ⚠️ Needs attention
+Update this dashboard with `python3 scripts/update_progress_dashboard.py` and the visual with `python3 scripts/generate_progress_svg.py`.
 
 ### Environment readiness
 
