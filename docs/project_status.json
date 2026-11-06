@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "current_phase": 1,
+  "next_milestone": "Validate Kokkos Serial and JUBE on macOS.",
+  "phases": [
+    {
+      "number": 0,
+      "name": "Repository foundation",
+      "status": "complete",
+      "detail": "[Validation evidence](docs/validation/phase-0.md)"
+    },
+    {
+      "number": 1,
+      "name": "macOS host environment",
+      "status": "in_progress",
+      "detail": "Kokkos Serial and JUBE validation"
+    },
+    {
+      "number": 2,
+      "name": "Fedora base and NVIDIA driver",
+      "status": "not_started",
+      "detail": "Fedora post-install setup"
+    },
+    {
+      "number": 3,
+      "name": "CUDA and Nsight Compute",
+      "status": "not_started",
+      "detail": "CUDA and profiler smoke tests"
+    },
+    {
+      "number": 4,
+      "name": "Kokkos Serial and CUDA",
+      "status": "not_started",
+      "detail": "Kokkos architecture validation"
+    },
+    {
+      "number": 5,
+      "name": "JUBE workflow",
+      "status": "not_started",
+      "detail": "End-to-end dummy benchmark"
+    },
+    {
+      "number": 6,
+      "name": "Pre-STREAM readiness gate",
+      "status": "blocked",
+      "detail": "[Requires Phases 1–5](docs/PIPELINE.md#pre-stream-readiness-gate)"
+    }
+  ],
+  "kernels": [
+    {
+      "name": "STREAM Triad",
+      "status": "blocked",
+      "baseline": "blocked",
+      "tuned": "blocked",
+      "analysis": "blocked",
+      "detail": "Blocked by readiness gate"
+    },
+    {
+      "name": "Seven-point stencil",
+      "status": "not_started",
+      "baseline": "not_started",
+      "tuned": "not_started",
+      "analysis": "not_started",
+      "detail": "Not started; follows STREAM"
+    },
+    {
+      "name": "CSR SpMV",
+      "status": "not_started",
+      "baseline": "not_started",
+      "tuned": "not_started",
+      "analysis": "not_started",
+      "detail": "Not started; follows stencil"
+    }
+  ],
+  "final": {
+    "name": "Instructor reproduction",
+    "status": "not_started",
+    "detail": "Fresh-clone validation and final report",
+    "cross_kernel_analysis": "not_started"
+  }
+}

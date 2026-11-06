@@ -1,0 +1,34 @@
+{
+  "font_family": "Google Sans Flex",
+  "prepared_on": "2026-11-06",
+  "upstream": {
+    "repository": "https://github.com/google/fonts/tree/main/ofl/googlesansflex",
+    "font_url": "https://raw.githubusercontent.com/google/fonts/main/ofl/googlesansflex/GoogleSansFlex%5BROND%2Copsz%2Cslnt%2Cwdth%2Cwght%5D.ttf",
+    "font_sha256": "a9ac770798857d5e8ac593ced42b22e40a7c08cec98319f92b0eccc2783a77ba",
+    "license_url": "https://raw.githubusercontent.com/google/fonts/main/ofl/googlesansflex/OFL.txt",
+    "license_sha256": "fc13d69f63e36d284b6e383d4d1463d8ad404f0aa065e57cf961252d51063137"
+  },
+  "subset": {
+    "file": "GoogleSansFlex-Rounded100-Latin.woff2",
+    "sha256": "9035ecc43d698f0fecde6af2d926126fc39a978c5f1383bb335a38bf5d25a0dd",
+    "characters": "Printable ASCII, U+0020 through U+007E",
+    "instantiated_axes": {
+      "ROND": 100,
+      "opsz": 18,
+      "wdth": 100,
+      "slnt": 0
+    },
+    "retained_axes": {
+      "wght": {
+        "minimum": 1,
+        "default": 400,
+        "maximum": 1000
+      }
+    },
+    "method": "Subset the official variable font with fontTools, instantiate ROND, optical size, width, and slant, then encode as WOFF2.",
+    "tools": {
+      "fontTools": "4.60.2",
+      "Brotli": "1.2.1"
+    }
+  }
+}
