@@ -68,7 +68,7 @@ def render_dashboard(data):
 
     lines = [
         START,
-        f"**Current focus:** {focus}  ",
+        f"**Current focus:** {focus}<br>",
         f"**Next milestone:** {data['next_milestone']}",
         "",
         "**Status legend:** ✅ Complete · 🔄 In progress · ⬜ Not started · 🔒 Blocked · ⚠️ Needs attention",
@@ -107,7 +107,7 @@ def render_dashboard(data):
     lines.extend(
         [
             "",
-            f"**Final instructor reproduction:** {status_text(final['status'])}  ",
+            f"**Final instructor reproduction:** {status_text(final['status'])}<br>",
             f"**Final cross-kernel analysis:** {status_text(final['cross_kernel_analysis'])}",
             END,
         ]

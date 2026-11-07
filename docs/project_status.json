@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "current_phase": 1,
-  "next_milestone": "Validate Kokkos Serial and JUBE on macOS.",
+  "current_phase": 2,
+  "next_milestone": "Install Fedora 45 development tools and NVIDIA driver.",
   "phases": [
     {
       "number": 0,
@@ -12,13 +12,13 @@
     {
       "number": 1,
       "name": "macOS host environment",
-      "status": "in_progress",
-      "detail": "Kokkos Serial and JUBE validation"
+      "status": "complete",
+      "detail": "[Kokkos evidence](docs/validation/phase-1-kokkos.md) and [JUBE evidence](docs/validation/phase-1-jube.md)"
     },
     {
       "number": 2,
       "name": "Fedora base and NVIDIA driver",
-      "status": "not_started",
+      "status": "in_progress",
       "detail": "Fedora post-install setup"
     },
     {

@@ -1,0 +1,17 @@
+contourpy==1.4.0
+cycler==0.12.1
+fonttools==4.68.0
+JUBE @ https://apps.fz-juelich.de/jsc/jube/download.php?version=2.7.1#sha256=fe8b505a8bf224d785df665af134a1e69063d34d1a7214700d8c7325fef9ecfc
+kiwisolver==1.5.1
+matplotlib==3.11.2
+numpy==2.5.4
+packaging==26.3
+pandas==3.1.1
+pillow==13.0.0
+pyparsing==3.3.3
+python-dateutil==4.0.0
+PyYAML==6.0.3
+ruamel.yaml==0.19.1
+setuptools==84.2.1
+tzdata==2026.6
+wheel==0.48.0

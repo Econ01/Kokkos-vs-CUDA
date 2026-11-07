@@ -6,7 +6,7 @@ This is the living checklist for the project. Work proceeds one kernel at a time
 
 - Validation evidence includes the date, command, result, and linked artifact.
 - **Stop gates** block dependent work until their requirements pass.
-- Current phase: **Phase 1, macOS development environment**.
+- Current phase: **Phase 2, Fedora 45 base system and NVIDIA driver**.
 - Next kernel: **STREAM**, but only after the pre-STREAM readiness gate.
 
 ## Phase 0 — Repository and documentation foundation
@@ -24,21 +24,21 @@ This is the living checklist for the project. Work proceeds one kernel at a time
 
 ## Phase 1 — macOS development environment
 
-- [ ] Install or update Git, CMake, Ninja, the Xcode compiler toolchain, and a current compatible Python.
-- [ ] Select one Python manager and a current compatible Python interpreter.
-- [ ] Create an isolated project Python environment.
-- [ ] Install JUBE, PyYAML, `ruamel.yaml`, NumPy, pandas, and matplotlib.
-- [ ] Record exact Python dependency versions after validation.
-- [ ] Verify Git, CMake, Ninja, Python, and JUBE versions.
-- [ ] Select the latest compatible Kokkos release and record its official archive URL and SHA-256 checksum.
-- [ ] Add the pinned Kokkos `FetchContent` integration and Serial smoke target.
-- [ ] Build the smoke target with `macos-serial` in Release mode.
-- [ ] Validate Kokkos initialization, a small parallel operation, a reduction, and finalization against a host reference.
-- [ ] Register and pass the smoke test through CTest.
-- [ ] Run JUBE hello-world and a complete run/analyse/result cycle.
-- [ ] Verify YAML parsing and schema validation.
-- [ ] Save the macOS environment manifest and smoke-test evidence.
-- [ ] Confirm that no macOS timing enters GPU comparison tables.
+- [x] Install or update Git, CMake, Ninja, the Xcode compiler toolchain, and a current compatible Python.
+- [x] Select one Python manager and a current compatible Python interpreter.
+- [x] Create an isolated project Python environment.
+- [x] Install JUBE, PyYAML, `ruamel.yaml`, NumPy, pandas, and matplotlib.
+- [x] Record exact Python dependency versions after validation ([environment record](environments/macos.md)).
+- [x] Verify Git, CMake, Ninja, Python, and JUBE versions ([environment record](environments/macos.md)).
+- [x] Select the latest compatible Kokkos release and record its official archive URL and SHA-256 checksum ([environment record](environments/macos.md)).
+- [x] Add the pinned Kokkos `FetchContent` integration and Serial smoke target.
+- [x] Build the smoke target with `macos-serial` in Release mode.
+- [x] Validate Kokkos initialization, a small parallel operation, a reduction, and finalization against a host reference.
+- [x] Register and pass the smoke test through CTest ([validation evidence](validation/phase-1-kokkos.md)).
+- [x] Run JUBE hello-world and a complete run/analyse/result cycle ([validation evidence](validation/phase-1-jube.md)).
+- [x] Verify YAML parsing and schema validation ([validation evidence](validation/phase-1-jube.md)).
+- [x] Save the macOS environment manifest and smoke-test evidence ([environment record](environments/macos.md)).
+- [x] Confirm that no macOS timing enters GPU comparison tables.
 
 ## Phase 2 — Fedora 45 base system and NVIDIA driver
 

@@ -7,12 +7,12 @@ This project compares Kokkos and native CUDA implementations of STREAM Triad, a 
 ## Project progress
 
 <!-- PROGRESS_DASHBOARD:START -->
-**Current focus:** Phase 1 — macOS host environment  
-**Next milestone:** Validate Kokkos Serial and JUBE on macOS.
+**Current focus:** Phase 2 — Fedora base and NVIDIA driver<br>
+**Next milestone:** Install Fedora 45 development tools and NVIDIA driver.
 
 **Status legend:** ✅ Complete · 🔄 In progress · ⬜ Not started · 🔒 Blocked · ⚠️ Needs attention
 
-[![Project pipeline progress: Phase 1 — macOS host environment is in progress](docs/assets/project-progress.svg)](docs/PIPELINE.md)
+[![Project pipeline progress: Phase 2 — Fedora base and NVIDIA driver is in progress](docs/assets/project-progress.svg)](docs/PIPELINE.md)
 
 Update this dashboard with `python3 scripts/update_progress_dashboard.py` and the visual with `python3 scripts/generate_progress_svg.py`.
 
@@ -21,8 +21,8 @@ Update this dashboard with `python3 scripts/update_progress_dashboard.py` and th
 | Phase | Milestone | Status | Evidence or next step |
 | --- | --- | --- | --- |
 | 0 | Repository foundation | ✅ Complete | [Validation evidence](docs/validation/phase-0.md) |
-| 1 | macOS host environment | 🔄 In progress | Kokkos Serial and JUBE validation |
-| 2 | Fedora base and NVIDIA driver | ⬜ Not started | Fedora post-install setup |
+| 1 | macOS host environment | ✅ Complete | [Kokkos evidence](docs/validation/phase-1-kokkos.md) and [JUBE evidence](docs/validation/phase-1-jube.md) |
+| 2 | Fedora base and NVIDIA driver | 🔄 In progress | Fedora post-install setup |
 | 3 | CUDA and Nsight Compute | ⬜ Not started | CUDA and profiler smoke tests |
 | 4 | Kokkos Serial and CUDA | ⬜ Not started | Kokkos architecture validation |
 | 5 | JUBE workflow | ⬜ Not started | End-to-end dummy benchmark |
@@ -36,7 +36,7 @@ Update this dashboard with `python3 scripts/update_progress_dashboard.py` and th
 | Seven-point stencil | ⬜ | ⬜ | ⬜ | Not started; follows STREAM |
 | CSR SpMV | ⬜ | ⬜ | ⬜ | Not started; follows stencil |
 
-**Final instructor reproduction:** ⬜ Not started  
+**Final instructor reproduction:** ⬜ Not started<br>
 **Final cross-kernel analysis:** ⬜ Not started
 <!-- PROGRESS_DASHBOARD:END -->
 
@@ -54,7 +54,7 @@ The machines synchronize through Git and key-based SSH. macOS timings never ente
 
 ## Build scaffold
 
-Requirements for the current scaffold are CMake 3.25 or newer, Ninja, and a C++20 compiler. Kokkos, CUDA, and test targets are intentionally not integrated yet.
+Requirements are CMake 3.25 or newer, Ninja, and a C++20 compiler. The `macos-serial` preset downloads the pinned Kokkos 5.2.2 release through `FetchContent` and builds its Serial smoke test.
 
 ```bash
 cmake --preset macos-serial
@@ -62,7 +62,7 @@ cmake --build --preset macos-serial
 ctest --preset macos-serial
 ```
 
-Available preset names are `macos-serial`, `fedora-serial`, and `fedora-cuda`. The CUDA preset requires the later Fedora environment-validation phases and currently enables only the CUDA language, not benchmark targets. Machine-specific overrides use an untracked `CMakeUserPresets.json`.
+Available preset names are `macos-serial`, `fedora-serial`, and `fedora-cuda`. The CUDA preset configures Kokkos for Ada 89 but remains unvalidated until the Fedora environment phases. No benchmark-kernel targets are present. Machine-specific overrides use an untracked `CMakeUserPresets.json`.
 
 ## Documentation
 

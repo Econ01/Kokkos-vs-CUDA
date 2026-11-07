@@ -29,6 +29,9 @@ if(KVC_ENABLE_CUDA)
 endif()
 
 include(CTest)
+include(cmake/Kokkos.cmake)
 
-# Smoke targets are added during Phases 3-5. Benchmark-kernel targets are added
-# only after the pre-STREAM readiness gate in docs/PIPELINE.md has passed.
+add_subdirectory(smoke)
+
+# Benchmark-kernel targets are added only after the pre-STREAM readiness gate in
+# docs/PIPELINE.md has passed.

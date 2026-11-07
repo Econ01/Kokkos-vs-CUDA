@@ -96,8 +96,8 @@ Every authoritative result group must reference an environment manifest. Store m
 
 ## Documentation to complete during setup
 
-- [ ] macOS exact tool versions and smoke-test evidence.
+- [x] macOS exact tool versions and smoke-test evidence ([record](environments/macos.md)).
 - [ ] Fedora OS, kernel, driver, CUDA, compiler, and compatibility evidence.
 - [ ] Kokkos version, checksum, backend configuration, and architecture evidence.
-- [ ] JUBE source archive, checksum, Python lock file, and validation evidence.
+- [x] JUBE source archive, checksum, Python lock file, and validation evidence ([evidence](validation/phase-1-jube.md)).
 - [ ] Frozen pre-STREAM manifests for macOS and Fedora.
