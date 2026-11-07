@@ -44,7 +44,7 @@ This is the living checklist for the project. Work proceeds one kernel at a time
 
 ### Base tools
 
-- [ ] Perform the initial system update before freezing versions.
+- [x] Perform the initial system update before freezing versions.
 - [ ] Install the required post-install development tools:
 
 ```bash
