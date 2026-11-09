@@ -1,6 +1,9 @@
 # Internal documentation
 internal_docs/**
 
+# Local configurations
+remote.local.json
+
 # CMake and build outputs
 build/
 cmake-build-*/

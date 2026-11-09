@@ -67,6 +67,7 @@ Available preset names are `macos-serial`, `fedora-serial`, and `fedora-cuda`. T
 - [Phase 0 validation evidence](docs/validation/phase-0.md)
 - [Environment and version policy](docs/ENVIRONMENT.md)
 - [Benchmarking and reporting protocol](docs/BENCHMARK_PROTOCOL.md)
+- [Fedora remote development](docs/REMOTE.md)
 - Kernel experiment cards:
   - [STREAM Triad](docs/kernels/stream.md)
   - [Seven-point stencil](docs/kernels/stencil.md)

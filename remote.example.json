@@ -1,0 +1,5 @@
+{
+    "host": "host_name",
+    "remote_repo": "abolute_path_to_remote_repo",
+    "timeout": 300
+}
