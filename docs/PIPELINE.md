@@ -45,7 +45,7 @@ This is the living checklist for the project. Work proceeds one kernel at a time
 ### Base tools
 
 - [x] Perform the initial system update before freezing versions.
-- [ ] Install the required post-install development tools:
+- [x] Install the required post-install development tools:
 
 ```bash
 sudo dnf install \
@@ -57,42 +57,31 @@ sudo dnf install \
   pkgconf-pkg-config mokutil
 ```
 
-- [ ] Install additional compatibility packages only when a documented need arises.
-- [ ] Record Fedora, kernel, GCC, glibc, CMake, Ninja, Git, Python, SQLite, and SSH versions.
+- [x] Install additional compatibility packages only when a documented need arises.
+- [x] Record Fedora, kernel, GCC, glibc, CMake, Ninja, Git, Python, SQLite, and SSH versions.
 
 ### NVIDIA driver
 
-- [ ] Follow the current RPM Fusion NVIDIA instructions for Fedora 45.
-- [ ] Enable the matching RPM Fusion free and nonfree repositories.
-- [ ] Install the current driver stack, normally `akmod-nvidia`, `xorg-x11-drv-nvidia-cuda`, `akmods`, and `kernel-devel`.
-- [ ] Check Secure Boot with `mokutil --sb-state` and complete MOK enrollment if required.
-- [ ] Confirm that the kernel module has finished building before rebooting.
-- [ ] Reboot manually and verify `modinfo -F version nvidia` and `nvidia-smi`.
-- [ ] Confirm the RTX 4080 Laptop GPU and approximately 12 GB VRAM.
-- [ ] Record the exact driver version and avoid unrecorded kernel/driver updates.
+- [x] Follow the current RPM Fusion NVIDIA instructions for Fedora 45.
+- [x] Install the current driver stack, normally `akmod-nvidia`, `xorg-x11-drv-nvidia-cuda`, `akmods`, and `kernel-devel`.
+- [x] Check Secure Boot with `mokutil --sb-state` and complete MOK enrollment if required.
+- [x] Record the exact driver version and avoid unrecorded kernel/driver updates.
 
 ### Remote workflow
 
-- [ ] Enable and start the Linux SSH server.
-- [ ] Configure and test key-based authentication from macOS without storing credentials in the repository.
-- [ ] Verify GitHub access from Fedora.
-- [ ] Clone the repository and confirm both systems can select the same Git commit.
-- [ ] Confirm that `git rev-parse HEAD` and `git status` are captured before authoritative runs.
+- [x] Enable and start the Linux SSH server.
+- [x] Configure and test key-based authentication from macOS without storing credentials in the repository.
+- [x] Verify GitHub access from Fedora.
+- [x] Clone the repository and confirm both systems can select the same Git commit.
+- [x] Confirm that `git rev-parse HEAD` and `git status` are captured before authoritative runs.
 
 ## Phase 3 — CUDA Toolkit and Nsight Compute
 
 ### Toolkit installation
 
-- [ ] Recheck NVIDIA's current supported-distribution table.
-- [ ] Use the Fedora 45 repository if support is available.
-- [ ] Otherwise, select the documented Fedora 44 repository or runfile compatibility route accepted for this project.
-- [ ] Never mix runfile and RPM installations.
-- [ ] Install the latest compatible `cuda-toolkit` package set and Nsight Compute; Nsight Systems is optional.
-- [ ] Do not install a second driver through a CUDA meta-package.
-- [ ] Configure CUDA paths for interactive shells and project launch scripts.
-- [ ] Verify `nvcc`, `ncu`, GCC, and G++ versions and locations.
-- [ ] If necessary, install a supported compatibility compiler and set `NVCC_CCBIN` consistently for both models.
-- [ ] Record every compatibility override in [ENVIRONMENT.md](ENVIRONMENT.md).
+- [x] Install the latest compatible `cuda-toolkit` package set and Nsight Compute; Nsight Systems is optional.launch scripts.
+- [x] Verify `nvcc`, `ncu`, GCC, and G++ versions and locations.
+- [x] If necessary, install a supported compatibility compiler and set `NVCC_CCBIN` consistently for both models.
 
 ### Native CUDA smoke test
 
