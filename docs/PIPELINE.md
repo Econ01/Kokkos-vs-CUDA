@@ -6,7 +6,7 @@ This is the living checklist for the project. Work proceeds one kernel at a time
 
 - Validation evidence includes the date, command, result, and linked artifact.
 - **Stop gates** block dependent work until their requirements pass.
-- Current phase: **Phase 2, Fedora 45 base system and NVIDIA driver**.
+- Current phase: **Phase 3, CUDA Toolkit and Nsight Compute**.
 - Next kernel: **STREAM**, but only after the pre-STREAM readiness gate.
 
 ## Phase 0 — Repository and documentation foundation

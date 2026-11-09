@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="440" viewBox="0 0 1440 440" role="img" aria-labelledby="pipeline-title pipeline-desc">
 <title id="pipeline-title">Project pipeline progress</title>
-<desc id="pipeline-desc">Phase 0 Repository foundation: complete; Phase 1 macOS host environment: complete; Phase 2 Fedora base and NVIDIA driver: in progress; Phase 3 CUDA and Nsight Compute: not started; Phase 4 Kokkos Serial and CUDA: not started; Phase 5 JUBE workflow: not started; Phase 6 Pre-STREAM readiness gate: blocked; STREAM Triad: blocked; Seven-point stencil: not started; CSR SpMV: not started; Instructor reproduction: not started</desc>
+<desc id="pipeline-desc">Phase 0 Repository foundation: complete; Phase 1 macOS host environment: complete; Phase 2 Fedora base and NVIDIA driver: complete; Phase 3 CUDA and Nsight Compute: in progress; Phase 4 Kokkos Serial and CUDA: not started; Phase 5 JUBE workflow: not started; Phase 6 Pre-STREAM readiness gate: blocked; STREAM Triad: blocked; Seven-point stencil: not started; CSR SpMV: not started; Instructor reproduction: not started</desc>
 <style>
 /* Embedded instance: ROND 100, opsz 18, wdth 100, slnt 0; weight axis retained. */
 @font-face {
@@ -25,7 +25,7 @@ text {
 <text x="48" y="82" class="section">Environment readiness</text>
 <line x1="121" y1="136" x2="279" y2="136" stroke="#1E8E3E" stroke-width="4" stroke-linecap="round"/>
 <line x1="329" y1="136" x2="487" y2="136" stroke="#1E8E3E" stroke-width="4" stroke-linecap="round"/>
-<line x1="537" y1="136" x2="695" y2="136" stroke="#DADCE0" stroke-width="4" stroke-linecap="round"/>
+<line x1="537" y1="136" x2="695" y2="136" stroke="#1E8E3E" stroke-width="4" stroke-linecap="round"/>
 <line x1="745" y1="136" x2="903" y2="136" stroke="#DADCE0" stroke-width="4" stroke-linecap="round"/>
 <line x1="953" y1="136" x2="1111" y2="136" stroke="#DADCE0" stroke-width="4" stroke-linecap="round"/>
 <line x1="1161" y1="136" x2="1319" y2="136" stroke="#DADCE0" stroke-width="4" stroke-linecap="round"/>
@@ -39,16 +39,16 @@ text {
 <text x="304" y="182" text-anchor="middle" class="step-name">macOS host</text>
 <text x="304" y="200" text-anchor="middle" class="step-name">environment</text>
 <text x="304" y="224" text-anchor="middle" class="step-status" fill="#1E8E3E">Complete</text>
-<circle cx="512" cy="136" r="20" fill="#00796B"/>
-<text x="512" y="141" text-anchor="middle" class="step-number" fill="#FFFFFF">2</text>
+<circle cx="512" cy="136" r="20" fill="#1E8E3E"/>
+<path d="M 505 136 l 4.5 4.5 l 8.5 -9" fill="none" stroke="#FFFFFF" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="512" y="182" text-anchor="middle" class="step-name">Fedora base and</text>
 <text x="512" y="200" text-anchor="middle" class="step-name">NVIDIA driver</text>
-<text x="512" y="224" text-anchor="middle" class="step-status" fill="#00796B">In progress</text>
-<circle cx="720" cy="136" r="20" fill="#FFFFFF" stroke="#DADCE0" stroke-width="3"/>
-<text x="720" y="141" text-anchor="middle" class="step-number" fill="#5F6368">3</text>
+<text x="512" y="224" text-anchor="middle" class="step-status" fill="#1E8E3E">Complete</text>
+<circle cx="720" cy="136" r="20" fill="#00796B"/>
+<text x="720" y="141" text-anchor="middle" class="step-number" fill="#FFFFFF">3</text>
 <text x="720" y="182" text-anchor="middle" class="step-name">CUDA and Nsight</text>
 <text x="720" y="200" text-anchor="middle" class="step-name">Compute</text>
-<text x="720" y="224" text-anchor="middle" class="step-status" fill="#5F6368">Not started</text>
+<text x="720" y="224" text-anchor="middle" class="step-status" fill="#00796B">In progress</text>
 <circle cx="928" cy="136" r="20" fill="#FFFFFF" stroke="#DADCE0" stroke-width="3"/>
 <text x="928" y="141" text-anchor="middle" class="step-number" fill="#5F6368">4</text>
 <text x="928" y="182" text-anchor="middle" class="step-name">Kokkos Serial and</text>

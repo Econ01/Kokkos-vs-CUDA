@@ -7,12 +7,12 @@ This project compares Kokkos and native CUDA implementations of STREAM Triad, a 
 ## Project progress
 
 <!-- PROGRESS_DASHBOARD:START -->
-**Current focus:** Phase 2 — Fedora base and NVIDIA driver<br>
-**Next milestone:** Install Fedora 45 development tools and NVIDIA driver.
+**Current focus:** Phase 3 — CUDA and Nsight Compute<br>
+**Next milestone:** Validate native CUDA execution and Nsight Compute memory-traffic profiling.
 
 **Status legend:** ✅ Complete · 🔄 In progress · ⬜ Not started · 🔒 Blocked · ⚠️ Needs attention
 
-[![Project pipeline progress: Phase 2 — Fedora base and NVIDIA driver is in progress](docs/assets/project-progress.svg)](docs/PIPELINE.md)
+[![Project pipeline progress: Phase 3 — CUDA and Nsight Compute is in progress](docs/assets/project-progress.svg)](docs/PIPELINE.md)
 
 Update this dashboard with `python3 scripts/update_progress_dashboard.py` and the visual with `python3 scripts/generate_progress_svg.py`.
 
@@ -22,8 +22,8 @@ Update this dashboard with `python3 scripts/update_progress_dashboard.py` and th
 | --- | --- | --- | --- |
 | 0 | Repository foundation | ✅ Complete | [Validation evidence](docs/validation/phase-0.md) |
 | 1 | macOS host environment | ✅ Complete | [Kokkos evidence](docs/validation/phase-1-kokkos.md) and [JUBE evidence](docs/validation/phase-1-jube.md) |
-| 2 | Fedora base and NVIDIA driver | 🔄 In progress | Fedora post-install setup |
-| 3 | CUDA and Nsight Compute | ⬜ Not started | CUDA and profiler smoke tests |
+| 2 | Fedora base and NVIDIA driver | ✅ Complete | Fedora post-install setup |
+| 3 | CUDA and Nsight Compute | 🔄 In progress | CUDA and profiler smoke tests |
 | 4 | Kokkos Serial and CUDA | ⬜ Not started | Kokkos architecture validation |
 | 5 | JUBE workflow | ⬜ Not started | End-to-end dummy benchmark |
 | 6 | Pre-STREAM readiness gate | 🔒 Blocked | [Requires Phases 1–5](docs/PIPELINE.md#pre-stream-readiness-gate) |
