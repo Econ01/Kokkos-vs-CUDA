@@ -18,13 +18,13 @@
     {
       "number": 2,
       "name": "Fedora base and NVIDIA driver",
-      "status": "in_progress",
+      "status": "complete",
       "detail": "Fedora post-install setup"
     },
     {
       "number": 3,
       "name": "CUDA and Nsight Compute",
-      "status": "not_started",
+      "status": "in_progress",
       "detail": "CUDA and profiler smoke tests"
     },
     {
