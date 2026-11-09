@@ -9,13 +9,10 @@ This project compares Kokkos and native CUDA implementations of STREAM Triad, a 
 <!-- PROGRESS_DASHBOARD:START -->
 **Current focus:** Phase 3 — CUDA and Nsight Compute<br>
 **Next milestone:** Validate native CUDA execution and Nsight Compute memory-traffic profiling.
-
-**Status legend:** ✅ Complete · 🔄 In progress · ⬜ Not started · 🔒 Blocked · ⚠️ Needs attention
-
 [![Project pipeline progress: Phase 3 — CUDA and Nsight Compute is in progress](docs/assets/project-progress.svg)](docs/PIPELINE.md)
 
-Update this dashboard with `python3 scripts/update_progress_dashboard.py` and the visual with `python3 scripts/generate_progress_svg.py`.
 
+**Status legend:** ✅ Complete · 🔄 In progress · ⬜ Not started · 🔒 Blocked · ⚠️ Needs attention
 ### Environment readiness
 
 | Phase | Milestone | Status | Evidence or next step |
