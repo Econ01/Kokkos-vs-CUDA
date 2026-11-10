@@ -37,6 +37,53 @@ class CommandError(RuntimeError):
     """A command failed, timed out, or failed a safety check."""
 
 
+class Console:
+    def __init__(self, enabled):
+        self.enabled = enabled
+
+    @staticmethod
+    def badge(label):
+        return f"[{label:^7}]"
+
+    def format(self, text, ansi_code):
+        if not self.enabled:
+            return text
+        return f"\033[{ansi_code}m{text}\033[0m"
+
+    def success(self, text):
+        print(self.format(f"{self.badge('OK')} {text}", "32"))
+
+    def warning(self, text):
+        print(self.format(f"{self.badge('WARN')} {text}", "33"))
+
+    def error(self, text, stream=None):
+        print(self.format(f"{self.badge('ERROR')} {text}", "31"), file=stream or sys.stdout)
+
+    def command(self, text, dry_run=False):
+        label = "DRY-RUN" if dry_run else "RUN"
+        print(self.format(f"{self.badge(label)} {text}", "36"))
+
+    def section(self, text):
+        print(self.format(text, "1"))
+
+    def metadata(self, label, text):
+        print(self.format(f"{self.badge(label)} {text}", "2"))
+
+
+def colors_enabled(mode, environment=None, stream=None):
+    environment = os.environ if environment is None else environment
+    if "NO_COLOR" in environment or environment.get("TERM") == "dumb":
+        return False
+    if mode == "always":
+        return True
+    if mode == "never":
+        return False
+    if mode != "auto":
+        raise ValueError(f"Unknown color mode: {mode}")
+    stream = stream or sys.stdout
+    return bool(getattr(stream, "isatty", lambda: False)())
+
+
 def validate_host(host):
     if not host or host.startswith("-") or any(c.isspace() for c in host):
         raise ValueError("SSH host must be a single alias or hostname without spaces")
@@ -105,16 +152,17 @@ def load_config(path):
     return config
 
 class RemoteClient:
-    def __init__(self, host, remote_repo, dry_run=False, timeout=300, runner=None):
+    def __init__(self, host, remote_repo, dry_run=False, timeout=300, runner=None, console=None):
         self.host = validate_host(host)
         self.remote_repo = validate_remote_repo(remote_repo)
         self.dry_run = dry_run
         self.timeout = timeout
         self.runner = runner or subprocess.run
+        self.console = console or Console(False)
 
     def execute(self, arguments, stdin=None):
         if self.dry_run:
-            print(shlex.join(arguments))
+            self.console.command(shlex.join(arguments), dry_run=True)
             if stdin:
                 print(stdin)
             return subprocess.CompletedProcess(arguments, 0, stdout="", stderr="")
@@ -196,7 +244,10 @@ class RemoteClient:
 
 
 def check(client):
+    client.console.section("Environment")
     client.remote(["true"])
+    if not client.dry_run:
+        client.console.success("SSH connection established")
     client.remote_git(["rev-parse", "--is-inside-work-tree"])
     client.remote_script(
         "set -euo pipefail\n"
@@ -212,16 +263,17 @@ def check(client):
         "  jube --version\n"
         "fi\n"
     )
-    local_commit = client.local_commit()
-    remote_commit = client.remote_commit()
+    client.console.section("Repository")
+    local_commit = client.local_commit() or "<commit>"
+    remote_commit = client.remote_commit() or "<commit>"
     local_status = client.local_status() or "clean"
     remote_status = client.remote_status() or "clean"
-    print(f"Local commit:  {local_commit} ({local_status})")
-    print(f"Remote commit: {remote_commit} ({remote_status})")
+    client.console.metadata("LOCAL", f"{local_commit} ({local_status})")
+    client.console.metadata("REMOTE", f"{remote_commit} ({remote_status})")
     if local_commit != remote_commit:
-        print("Warning: local and remote commits differ; run sync before building.")
+        client.console.warning("Local and remote commits differ; run sync before building.")
     if local_status != "clean" or remote_status != "clean":
-        print("Warning: build and test require clean, matching checkouts.")
+        client.console.warning("Build and test require clean, matching checkouts.")
 
 
 def sync(client):
@@ -232,12 +284,13 @@ def sync(client):
     client.remote_git(["fetch", "origin", "main"])
     client.remote_git(["merge", "--ff-only", "origin/main"])
     commit = client.require_ready()
-    print(f"Local and remote checkouts are synchronized at {commit}")
+    if not client.dry_run:
+        client.console.success(f"Local and remote checkouts are synchronized at {commit}")
 
 
 def build(client, preset):
     commit = client.require_ready()
-    print(f"Building on Fedora at {commit}")
+    client.console.command(f"Building on Fedora at {commit or '<commit>'}")
     client.remote_script(
         "set -euo pipefail\n"
         f"cd {shlex.quote(client.remote_repo)}\n"
@@ -245,17 +298,21 @@ def build(client, preset):
         f"cmake --preset {shlex.quote(preset)}\n"
         f"cmake --build --preset {shlex.quote(preset)}\n"
     )
+    if not client.dry_run:
+        client.console.success("Remote build completed successfully")
 
 
 def test(client, preset):
     commit = client.require_ready()
-    print(f"Testing on Fedora at {commit}")
+    client.console.command(f"Testing on Fedora at {commit or '<commit>'}")
     client.remote_script(
         "set -euo pipefail\n"
         f"cd {shlex.quote(client.remote_repo)}\n"
         "export PATH=/usr/local/cuda/bin:$PATH\n"
         f"ctest --preset {shlex.quote(preset)} --output-on-failure\n"
     )
+    if not client.dry_run:
+        client.console.success("Remote tests completed successfully")
 
 
 def fetch(client, result_path, destination=None):
@@ -283,7 +340,8 @@ def fetch(client, result_path, destination=None):
             f"{destination}/",
         ]
     )
-    print(f"Fetched results into {destination}")
+    if not client.dry_run:
+        client.console.success(f"Fetched results into {destination}")
 
 
 def parse_args():
@@ -298,6 +356,12 @@ def parse_args():
     )
     parser.add_argument("--dry-run", action="store_true", help="print commands without executing them")
     parser.add_argument("--timeout", type=float, help="command timeout in seconds")
+    parser.add_argument(
+        "--color",
+        choices=("auto", "always", "never"),
+        default="auto",
+        help="colorize status messages (default: auto)",
+    )
 
     parser.add_argument(
         "--config",
@@ -321,6 +385,7 @@ def parse_args():
 
 def main():
     args = parse_args()
+    console = Console(colors_enabled(args.color))
     try:
         config = load_config(args.config)
 
@@ -344,8 +409,8 @@ def main():
 
         if timeout <= 0:
             raise ValueError("Timeout must be positive")
-        
-        client = RemoteClient(host, remote_repo, args.dry_run, timeout)
+
+        client = RemoteClient(host, remote_repo, args.dry_run, timeout, console=console)
         if args.operation == "check":
             check(client)
         elif args.operation == "sync":
@@ -358,7 +423,7 @@ def main():
             fetch(client, args.path, args.destination)
         return 0
     except (CommandError, ValueError, OSError) as error:
-        print(f"error: {error}", file=sys.stderr)
+        console.error(str(error), stream=sys.stderr)
         return 1
 
 

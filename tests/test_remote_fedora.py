@@ -1,11 +1,15 @@
+import io
 import subprocess
 import unittest
 import tempfile
+from contextlib import redirect_stdout
 from pathlib import Path
 
 from scripts.remote_fedora import (
     load_config,
+    colors_enabled,
     CommandError,
+    Console,
     RemoteClient,
     build,
     fetch,
@@ -74,6 +78,12 @@ class RemoteClientTests(unittest.TestCase):
         self.client(runner, dry_run=True).remote(["true"])
         self.assertEqual(runner.calls, [])
 
+    def test_dry_run_does_not_claim_success(self):
+        output = io.StringIO()
+        with redirect_stdout(output):
+            build(self.client(FakeRunner(), dry_run=True), "fedora-cuda")
+        self.assertNotIn("completed successfully", output.getvalue())
+
     def test_sync_uses_fast_forward_only(self):
         runner = FakeRunner()
         sync(self.client(runner))
@@ -135,6 +145,56 @@ class RemoteClientTests(unittest.TestCase):
         finally:
             (destination / "existing.txt").unlink()
             destination.rmdir()
+
+class ConsoleTests(unittest.TestCase):
+    def test_badges_have_consistent_width_and_spacing(self):
+        expected = {
+            "OK": "[  OK   ]",
+            "WARN": "[ WARN  ]",
+            "ERROR": "[ ERROR ]",
+            "LOCAL": "[ LOCAL ]",
+            "REMOTE": "[REMOTE ]",
+            "RUN": "[  RUN  ]",
+            "DRY-RUN": "[DRY-RUN]",
+        }
+        for label, badge in expected.items():
+            with self.subTest(label=label):
+                self.assertEqual(Console.badge(label), badge)
+                self.assertEqual(len(badge), 9)
+
+    def test_success_output_is_green_when_enabled(self):
+        output = io.StringIO()
+        with redirect_stdout(output):
+            Console(True).success("done")
+        self.assertEqual(output.getvalue(), "\x1b[32m[  OK   ] done\x1b[0m\n")
+
+    def test_output_is_plain_when_disabled(self):
+        output = io.StringIO()
+        with redirect_stdout(output):
+            Console(False).warning("check")
+        self.assertEqual(output.getvalue(), "[ WARN  ] check\n")
+
+    def test_auto_color_requires_tty(self):
+        class Terminal:
+            def __init__(self, is_tty):
+                self.is_tty = is_tty
+
+            def isatty(self):
+                return self.is_tty
+
+        self.assertTrue(colors_enabled("auto", environment={}, stream=Terminal(True)))
+        self.assertFalse(colors_enabled("auto", environment={}, stream=Terminal(False)))
+        self.assertTrue(colors_enabled("always", environment={}, stream=Terminal(False)))
+        self.assertFalse(colors_enabled("never", environment={}, stream=Terminal(True)))
+
+    def test_no_color_and_dumb_terminal_disable_color(self):
+        class Terminal:
+            def isatty(self):
+                return True
+
+        self.assertFalse(colors_enabled("always", environment={"NO_COLOR": "1"}, stream=Terminal()))
+        self.assertFalse(colors_enabled("auto", environment={"TERM": "dumb"}, stream=Terminal()))
+
 
 class ConfigurationTests(unittest.TestCase):
     def test_load_valid_config(self):

@@ -14,21 +14,32 @@ Machine-specific addresses, usernames, private keys, and repository paths are no
 
 ## Configuration
 
-The SSH alias defaults to `fedora`. A different alias can be supplied with `--host` or `KVC_SSH_HOST`.
-
-Set the remote repository path for the current shell:
+Copy the tracked example to create your local configuration:
 
 ```bash
-export KVC_REMOTE_REPO=/absolute/path/to/Kokkos-vs-CUDA
+cp remote.example.json remote.local.json
 ```
 
-Alternatively, pass it explicitly before each operation:
+Edit `remote.local.json` with your values:
 
-```bash
-python3 scripts/remote_fedora.py \
-  --remote-repo /absolute/path/to/Kokkos-vs-CUDA \
-  check
+```json
+{
+  "host": "fedora",
+  "remote_repo": "/absolute/path/to/Kokkos-vs-CUDA",
+  "timeout": 300
+}
 ```
+
+`remote.local.json` is excluded from Git. It contains only local connection and repository settings; private keys remain in `~/.ssh/config` and are never read by this script.
+
+Configuration is resolved in this order:
+
+1. Command-line options.
+2. Environment variables `KVC_SSH_HOST` and `KVC_REMOTE_REPO`.
+3. `remote.local.json`.
+4. Built-in defaults: host `fedora` and timeout 300 seconds.
+
+The SSH alias therefore defaults to `fedora`, while the remote repository path must be supplied through one of the other sources. Use `--config` to select a different JSON file, `--host` to override the alias, or `--remote-repo` to override the repository path.
 
 ## Commands
 
@@ -85,6 +96,18 @@ python3 scripts/remote_fedora.py --dry-run build --preset fedora-cuda
 python3 scripts/remote_fedora.py --dry-run fetch results/example
 ```
 
+## Colored output
+
+Status messages use semantic colors: green for success, yellow for warnings, red for errors, cyan for commands, bold text for sections, and dim text for repository metadata. Raw output from CMake, NVCC, CTest, JUBE, and other tools is not recolored.
+
+The default is `--color auto`, which enables ANSI colors only for interactive terminals. Colors are disabled for piped output, when `NO_COLOR` is set, and when `TERM=dumb`.
+
+```bash
+python3 scripts/remote_fedora.py --color always check
+python3 scripts/remote_fedora.py --color never check
+NO_COLOR=1 python3 scripts/remote_fedora.py check
+```
+
 ## SSH behavior
 
 Every SSH operation uses:
@@ -102,4 +125,4 @@ The script uses Python's standard library and local argument lists without `shel
 python3 -m unittest discover -s tests -p 'test_remote_fedora.py' -v
 ```
 
-The tests cover SSH options, dry-run behavior, absolute-path requirements, result-path validation, fast-forward-only synchronization, dirty or mismatched checkouts, preset selection, fetch-destination protection, and command failures.
+The tests cover SSH options, dry-run behavior, absolute-path requirements, result-path validation, fast-forward-only synchronization, dirty or mismatched checkouts, preset selection, fetch-destination protection, command failures, and color detection/formatting.

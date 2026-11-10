@@ -83,6 +83,10 @@ sudo dnf install \
 - [x] Verify `nvcc`, `ncu`, GCC, and G++ versions and locations.
 - [x] If necessary, install a supported compatibility compiler and set `NVCC_CCBIN` consistently for both models.
 
+### Communication and automation
+
+- [x] Implement communication automation and related tests
+
 ### Native CUDA smoke test
 
 - [ ] Add a trivial non-benchmark CUDA smoke program.
