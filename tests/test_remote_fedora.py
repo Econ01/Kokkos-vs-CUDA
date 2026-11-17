@@ -13,7 +13,9 @@ from scripts.remote_fedora import (
     RemoteClient,
     build,
     fetch,
+    run,
     sync,
+    test,
     validate_remote_repo,
     validate_result_path,
 )
@@ -118,6 +120,31 @@ class RemoteClientTests(unittest.TestCase):
         build(self.client(runner), "fedora-cuda")
         scripts = [kwargs["input"] for arguments, kwargs in runner.calls if kwargs.get("input")]
         self.assertTrue(any("cmake --preset fedora-cuda" in script for script in scripts))
+
+    def test_run_executes_requested_binary(self):
+        runner = FakeRunner()
+        run(self.client(runner), "cuda_smoke", "fedora-cuda")
+        scripts = [kwargs["input"] for arguments, kwargs in runner.calls if kwargs.get("input")]
+        self.assertTrue(any("build/fedora-cuda/smoke/cuda_smoke" in script for script in scripts))
+        self.assertTrue(any("if [ ! -x build/fedora-cuda/smoke/cuda_smoke ]" in script for script in scripts))
+
+    def test_run_rejects_unknown_target(self):
+        with self.assertRaises(ValueError):
+            run(self.client(), "unknown_target", "fedora-cuda")
+
+    def test_run_dry_run_does_not_claim_success(self):
+        output = io.StringIO()
+        with redirect_stdout(output):
+            run(self.client(FakeRunner(), dry_run=True), "cuda_smoke", "fedora-cuda")
+        self.assertNotIn("completed successfully", output.getvalue())
+
+    def test_verbose_test_appends_ctest_verbose(self):
+        runner = FakeRunner()
+        test(self.client(runner), "fedora-cuda", verbose=True)
+        scripts = [kwargs["input"] for arguments, kwargs in runner.calls if kwargs.get("input")]
+        self.assertTrue(
+            any("ctest --preset fedora-cuda --output-on-failure --verbose" in script for script in scripts)
+        )
 
     def test_timeout_is_reported_as_command_error(self):
         class TimeoutRunner(FakeRunner):

@@ -61,14 +61,18 @@ python3 scripts/remote_fedora.py sync
 
 `sync` requires clean local and remote checkouts, requires the remote checkout to be on `main`, fetches `origin/main`, and merges with `--ff-only`. It then requires both commits to match. It does not push local commits, reset either checkout, delete files, or resolve diverged branches.
 
-### Build and test
+### Build, run, and test
 
 ```bash
 python3 scripts/remote_fedora.py build --preset fedora-cuda
+python3 scripts/remote_fedora.py run --target cuda_smoke --preset fedora-cuda
 python3 scripts/remote_fedora.py test --preset fedora-cuda
+python3 scripts/remote_fedora.py test --preset fedora-cuda --verbose
 ```
 
-`build` and `test` require clean checkouts at the same commit. The remote scripts add `/usr/local/cuda/bin` to `PATH` and use `set -euo pipefail`, so failures stop the operation and produce a nonzero local exit status.
+`build`, `run`, and `test` require clean checkouts at the same commit. The remote scripts add `/usr/local/cuda/bin` to `PATH` and use `set -euo pipefail`, so failures stop the operation and produce a nonzero local exit status.
+
+Use `run` to execute a specific smoke binary directly and see all of its output. The allowed targets are `cuda_smoke` and `kokkos_smoke`. Use `test` for CTest-based correctness checks; `--verbose` shows output from passing as well as failing tests, while the default `--output-on-failure` mode shows detailed output only for failures.
 
 The default command timeout is 300 seconds. Longer builds can use, for example:
 
@@ -125,4 +129,4 @@ The script uses Python's standard library and local argument lists without `shel
 python3 -m unittest discover -s tests -p 'test_remote_fedora.py' -v
 ```
 
-The tests cover SSH options, dry-run behavior, absolute-path requirements, result-path validation, fast-forward-only synchronization, dirty or mismatched checkouts, preset selection, fetch-destination protection, command failures, and color detection/formatting.
+The tests cover SSH options, dry-run behavior, absolute-path requirements, result-path validation, fast-forward-only synchronization, dirty or mismatched checkouts, preset selection, direct execution, verbose CTest output, fetch-destination protection, command failures, and color detection/formatting.

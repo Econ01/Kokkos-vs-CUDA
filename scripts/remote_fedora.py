@@ -17,6 +17,7 @@ DEFAULT_TIMEOUT = 300
 CONFIG_KEYS = {"host", "remote_repo", "timeout"}
 DEFAULT_HOST = "fedora"
 PRESETS = ("fedora-cuda", "fedora-serial")
+RUN_TARGETS = ("cuda_smoke", "kokkos_smoke")
 SSH_OPTIONS = [
     "-o",
     "BatchMode=yes",
@@ -273,7 +274,7 @@ def check(client):
     if local_commit != remote_commit:
         client.console.warning("Local and remote commits differ; run sync before building.")
     if local_status != "clean" or remote_status != "clean":
-        client.console.warning("Build and test require clean, matching checkouts.")
+        client.console.warning("Build, run, and test require clean, matching checkouts.")
 
 
 def sync(client):
@@ -302,14 +303,36 @@ def build(client, preset):
         client.console.success("Remote build completed successfully")
 
 
-def test(client, preset):
+def run(client, target, preset):
+    if target not in RUN_TARGETS:
+        raise ValueError(f"Unknown run target: {target}")
+
     commit = client.require_ready()
-    client.console.command(f"Testing on Fedora at {commit or '<commit>'}")
+    binary_path = f"build/{preset}/smoke/{target}"
+    client.console.command(f"Running {target} on Fedora at {commit or '<commit>'}")
     client.remote_script(
         "set -euo pipefail\n"
         f"cd {shlex.quote(client.remote_repo)}\n"
         "export PATH=/usr/local/cuda/bin:$PATH\n"
-        f"ctest --preset {shlex.quote(preset)} --output-on-failure\n"
+        f"if [ ! -x {shlex.quote(binary_path)} ]; then\n"
+        f"  echo 'Missing binary: {binary_path}' >&2\n"
+        "  exit 1\n"
+        "fi\n"
+        f"{shlex.quote(binary_path)}\n"
+    )
+    if not client.dry_run:
+        client.console.success(f"{target} completed successfully")
+
+
+def test(client, preset, verbose=False):
+    commit = client.require_ready()
+    client.console.command(f"Testing on Fedora at {commit or '<commit>'}")
+    verbose_flag = " --verbose" if verbose else ""
+    client.remote_script(
+        "set -euo pipefail\n"
+        f"cd {shlex.quote(client.remote_repo)}\n"
+        "export PATH=/usr/local/cuda/bin:$PATH\n"
+        f"ctest --preset {shlex.quote(preset)} --output-on-failure{verbose_flag}\n"
     )
     if not client.dry_run:
         client.console.success("Remote tests completed successfully")
@@ -376,6 +399,16 @@ def parse_args():
     for operation in ("build", "test"):
         subparser = subparsers.add_parser(operation, help=f"run remote CMake {operation}")
         subparser.add_argument("--preset", choices=PRESETS, required=True)
+        if operation == "test":
+            subparser.add_argument(
+                "--verbose",
+                action="store_true",
+                help="show output from passing and failing tests",
+            )
+
+    run_parser = subparsers.add_parser("run", help="execute a smoke binary directly")
+    run_parser.add_argument("--target", choices=RUN_TARGETS, required=True)
+    run_parser.add_argument("--preset", choices=PRESETS, required=True)
 
     fetch_parser = subparsers.add_parser("fetch", help="fetch results with rsync")
     fetch_parser.add_argument("path", help="remote path relative to results/ or run/")
@@ -418,7 +451,9 @@ def main():
         elif args.operation == "build":
             build(client, args.preset)
         elif args.operation == "test":
-            test(client, args.preset)
+            test(client, args.preset, args.verbose)
+        elif args.operation == "run":
+            run(client, args.target, args.preset)
         elif args.operation == "fetch":
             fetch(client, args.path, args.destination)
         return 0
