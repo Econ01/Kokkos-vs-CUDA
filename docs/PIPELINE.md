@@ -89,11 +89,11 @@ sudo dnf install \
 
 ### Native CUDA smoke test
 
-- [ ] Add a trivial non-benchmark CUDA smoke program.
-- [ ] Target only `sm_89`.
-- [ ] Verify device detection, allocation, a trivial launch, synchronization, error checking, and cleanup.
-- [ ] Build and run it directly before using JUBE.
-- [ ] Optionally build an NVIDIA `deviceQuery`-style sample as an independent check.
+- [x] Add a trivial non-benchmark CUDA smoke program.
+- [x] Target only `sm_89`.
+- [x] Verify device detection, allocation, a trivial launch, synchronization, error checking, and cleanup.
+- [x] Build and run it directly before using JUBE.
+- [ ] ~~Optionally build an NVIDIA `deviceQuery`-style sample as an independent check.~~
 
 ### Nsight Compute gate
 
